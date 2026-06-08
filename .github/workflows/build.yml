@@ -19,6 +19,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        env:
+          ELECTRON_GET_USE_PROXY: true
+          GLOBAL_AGENT_HTTPS_PROXY: ""
+          npm_config_fetch_retry_mintimeout: 20000
+          npm_config_fetch_retry_maxtimeout: 120000
+          npm_config_fetch_retries: 5
 
       - name: Build Windows app
         run: npm run dist
