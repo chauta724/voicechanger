@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voice Changer</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="app">
+
+    <div class="header">
+      <div class="logo">🎙</div>
+      <div>
+        <h1>Voice Changer</h1>
+        <p class="sub">Real-time mic processing</p>
+      </div>
+    </div>
+
+    <!-- MIC + STATUS -->
+    <div class="status-row">
+      <button class="mic-btn" id="micBtn">
+        <span class="mic-icon">🎤</span>
+        <span id="micLabel">Start Mic</span>
+      </button>
+      <div class="status-indicator">
+        <div class="dot" id="statusDot"></div>
+        <span id="statusText">Mic off</span>
+      </div>
+    </div>
+
+    <!-- VISUALIZER -->
+    <div class="visualizer">
+      <canvas id="visCanvas" width="720" height="48"></canvas>
+    </div>
+
+    <!-- I/O DEVICES -->
+    <div class="card" id="ioCard">
+      <div class="section-label">Input / Output Devices</div>
+      <div class="io-row">
+        <label>🎤 Mic input</label>
+        <select id="selInput"></select>
+      </div>
+      <div class="io-row">
+        <label>🔊 Monitor output <span class="hint">(your headphones)</span></label>
+        <select id="selOutput1"></select>
+        <button class="toggle-btn" id="btnMonitor" onclick="toggleMonitor()">🔇 Muted</button>
+      </div>
+      <div class="io-row">
+        <label>📡 Virtual output <span class="hint">(e.g. VB-Audio Cable)</span></label>
+        <select id="selOutput2"></select>
+      </div>
+      <p class="io-note">💡 Set Virtual output to "CABLE Input" → set Discord mic to "CABLE Output". Download <a href="#" onclick="openLink('https://vb-audio.com/Cable/')">VB-Audio Virtual Cable</a> (free).</p>
+    </div>
+
+    <!-- CORE CONTROLS -->
+    <div class="card">
+      <div class="section-label">Core Controls</div>
+      <div class="slider-row">
+        <label>Mic Gain</label>
+        <input type="range" min="0" max="4" step="0.05" value="1" id="slGain"/>
+        <span class="val" id="vGain">1.0x</span>
+      </div>
+      <div class="slider-row">
+        <label>Pitch Shift</label>
+        <input type="range" min="-24" max="24" step="1" value="0" id="slPitch"/>
+        <span class="val" id="vPitch">0 st</span>
+      </div>
+      <div class="slider-row">
+        <label>Distortion</label>
+        <input type="range" min="0" max="400" step="1" value="0" id="slDist"/>
+        <span class="val" id="vDist">0</span>
+      </div>
+      <div class="slider-row">
+        <label>Baby Noise</label>
+        <input type="range" min="0" max="1" step="0.01" value="0" id="slBaby"/>
+        <span class="val" id="vBaby">0%</span>
+      </div>
+      <div class="slider-row">
+        <label>8-bit Depth</label>
+        <input type="range" min="1" max="16" step="1" value="16" id="sl8bit"/>
+        <span class="val" id="v8bit">16 bit</span>
+      </div>
+      <div class="slider-row">
+        <label>8-bit Rate</label>
+        <input type="range" min="1000" max="44100" step="100" value="44100" id="sl8rate"/>
+        <span class="val" id="v8rate">44k Hz</span>
+      </div>
+    </div>
+
+    <!-- EFFECTS -->
+    <div class="section-label" style="margin-top:1.5rem">Effects</div>
+    <div class="effects-grid" id="fxGrid"></div>
+
+    <!-- KEYBINDS -->
+    <div class="section-label" style="margin-top:1.5rem">Keybinds <span class="hint">— click a key badge to reassign</span></div>
+    <div class="card">
+      <table class="kb-table" id="kbTable">
+        <thead><tr><th>Action</th><th>Key</th><th></th></tr></thead>
+        <tbody id="kbBody"></tbody>
+      </table>
+    </div>
+
+    <div class="footer">Voice Changer v2.0 &nbsp;·&nbsp; Web Audio API</div>
+  </div>
+
+  <!-- KEYBIND CAPTURE MODAL -->
+  <div class="modal-overlay" id="kbModal">
+    <div class="modal">
+      <p class="modal-title">Press any key…</p>
+      <p class="modal-sub" id="kbModalSub">Assigning key for <strong id="kbModalAction"></strong></p>
+      <button class="modal-cancel" id="kbModalCancel">Cancel</button>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
